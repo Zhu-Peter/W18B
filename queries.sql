@@ -137,7 +137,7 @@ begin
     select username, sum(item.price) from purchase
     join customers on purchase.customer_id = customers.id
     join item on purchase.item_id = item.id
-    where purchase.purchase_date > date
+    where purchase.purchase_time > date
     group by username;
 end;
 
@@ -157,7 +157,7 @@ begin
     select username, avg(item.price) from purchase
     join customers on purchase.customer_id = customers.id
     join item on purchase.item_id = item.id
-    where purchase.purchase_date > date and purchase.customer_id = customer_id
+    where purchase.purchase_time > date and purchase.customer_id = customer_id
     group by username;
 end;
 
