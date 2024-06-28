@@ -109,15 +109,55 @@ end;
 -- Modify the SELECT statement you wrote before to now only return the username and count of purchases made by the customer with the id that is given when called
 -- Write the proper CALL query in your console for 3 different customers
 
-select username, count(id) from purchase 
+select username, count(purchase.id) from purchase 
 join customers on purchase.customer_id = customers.id
 group by username;
 
 create procedure customer_purchases(customer_id int)
 begin
-    select username, count(id) from purchase 
+    select username, count(purchase.id) from purchase 
     join customers on purchase.customer_id = customers.id
     where customers.id = customer_id
+    group by username;
+end;
+
+-- Write a SELECT query that will return the total amount of money a customer has spent on all purchases
+-- Convert the SELECT statement into a stored procedure
+-- Allow this stored procedure to take 1 argument, a date
+-- Modify the SELECT statement you wrote before to only include purchases made after the given date for the total
+-- Write the proper CALL query in your console for 3 different purchase dates
+
+select username, sum(item.price) from purchase
+join customers on purchase.customer_id = customers.id
+join item on purchase.item_id = item.id
+group by username;
+
+create procedure customer_purchases_after_date(date date)
+begin
+    select username, sum(item.price) from purchase
+    join customers on purchase.customer_id = customers.id
+    join item on purchase.item_id = item.id
+    where purchase.purchase_date > date
+    group by username;
+end;
+
+-- Write a SELECT query that will return the average amount of money a customer has spent on all purchases
+-- Convert the SELECT statement into a stored procedure 
+-- Allow this stored procedure to take 2 arguments, a date and customer id
+-- Modify the SELECT statement you wrote before to only include purchases made after the given date and by the specified customer for the average
+-- Write the proper CALL query in your console for 3 different purchase dates and customers
+
+select username, avg(item.price) from purchase
+join customers on purchase.customer_id = customers.id
+join item on purchase.item_id = item.id
+group by username;
+
+create procedure avg_purchase_date(date date, customer_id int)
+begin
+    select username, avg(item.price) from purchase
+    join customers on purchase.customer_id = customers.id
+    join item on purchase.item_id = item.id
+    where purchase.purchase_date > date and purchase.customer_id = customer_id
     group by username;
 end;
 
